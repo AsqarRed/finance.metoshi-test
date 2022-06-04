@@ -238,7 +238,10 @@ static async harvest(account) {
     });
 }
            
-static async withdraw(account,amount) {
+static async withdraw(account) {
+    let card = await SC.tokenInst.methods.getUserCardAmount(account).call();
+    let amount = await SC.tokenInst.methods.getInformation(account,card).call();
+    amount = new BigNumber(amount); 
     SC.tokenInst.methods.withdraw(amount)
     .send({from: account})
         .then(function(result){
